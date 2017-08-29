@@ -51,14 +51,14 @@
         <property name="resolveLazily" value="true"/>
     </bean>
 
-    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
-    <bean id="aopBean" class="com.gjyxfs.service.AudienceAspect"/>
-    <aop:config>
-        <aop:aspect ref="aopBean" >
-            <aop:pointcut expression="execution(* com.gjyxfs.service.*.*(..))" id="pointcut"/>
-            <aop:before method="taskSeats" pointcut-ref="pointcut"/>
-            <aop:after method="applaud" pointcut-ref="pointcut"/>
-            <aop:around method="demandRefund" pointcut-ref="pointcut"/>
-        </aop:aspect>
-    </aop:config>
+    <!--<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>-->
+    <!--<bean id="aopBean" class="com.gjyxfs.service.AudienceAspect"/>-->
+    <!--<aop:config>-->
+        <!--<aop:aspect ref="aopBean" >-->
+            <!--<aop:pointcut expression="execution(* com.gjyxfs.service.*.*(..))" id="pointcut"/>-->
+            <!--<aop:before method="taskSeats" pointcut-ref="pointcut"/>-->
+            <!--<aop:after method="applaud" pointcut-ref="pointcut"/>-->
+            <!--<aop:around method="demandRefund" pointcut-ref="pointcut"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
 </beans>
