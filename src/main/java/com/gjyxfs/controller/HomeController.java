@@ -2,8 +2,8 @@ package com.gjyxfs.controller;
 
 import com.gjyxfs.model.User;
 import com.gjyxfs.service.IUserService;
-import com.gjyxfs.service.ShowService;
-import com.gjyxfs.service.TestService;
+import com.gjyxfs.service.CacheService;
+import com.gjyxfs.service.TestAopService;
 import com.gjyxfs.util.JsonMapper;
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.LoadingCache;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -28,35 +27,27 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
-    private ShowService showService;
-
-    @Autowired
-    private TestService ts;
+    private CacheService cacheService;
 
     @Autowired
     private IUserService userService;
 
-    //映射一个action
-    @RequestMapping("/index")
+    @RequestMapping("/")
     @ResponseBody
-    public void index(HttpServletRequest request) throws ExecutionException, InterruptedException {
-        //AOP测试
-        //showService.show();
+    public String index(HttpServletRequest request){
+        return "HelloWorld";
+    }
+
+    @RequestMapping("/cache")
+    @ResponseBody
+    public void cache(HttpServletRequest request) throws ExecutionException, InterruptedException {
         while(true){
             Stopwatch timer = Stopwatch.createStarted();
-            LoadingCache<String, String> ss = showService.getCachedData();
+            LoadingCache<String, String> ss = cacheService.getCachedData();
             logger.info("返回结果;{} 耗时：{}", ss.get("testCache"), timer.stop());
             Thread.currentThread().sleep(1000);
         }
-//        LoadingCache<String, List<String>> ss =  showService.getCachedData();
 
-    }
-
-    @RequestMapping("/respNowTime")
-    @ResponseBody
-    public  String respNowTime(HttpServletRequest request) throws ExecutionException {
-
-        return ts.getNowTime();
     }
 
     @RequestMapping("/getAllUsers")

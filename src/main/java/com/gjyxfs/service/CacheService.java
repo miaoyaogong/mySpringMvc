@@ -7,12 +7,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/7/29.
  */
-public interface ShowService {
-    void show();
-
-    void addSs(int ss) throws InterruptedException;
-
-    int getSs();
+public interface CacheService {
 
     LoadingCache<String, String> getCachedData();
 }
