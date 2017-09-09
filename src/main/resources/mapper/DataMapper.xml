@@ -26,7 +26,7 @@
     where name = #{name,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.gjyxfs.model.Data" >
-    insert into data (name, value)
+    replace into data (name, value)
     values (#{name,jdbcType=VARCHAR}, #{value,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.gjyxfs.model.Data" >

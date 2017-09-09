@@ -28,4 +28,19 @@ public class PkController {
         String res = parsePkData.parsePkData(request);
         return res;
     }
+
+    @RequestMapping(value = "/getGroupData", produces="application/json;charset=utf-8")
+    @ResponseBody
+    public String getData(){
+        String res = parsePkData.getGroupData();
+        return res;
+    }
+
+    @RequestMapping(value = "/getMemberData", produces="application/json;charset=utf-8")
+    @ResponseBody
+    public String getMemberData(HttpServletRequest request){
+        String group =  request.getParameter("group");
+        String res = parsePkData.getMemberData(group);
+        return res;
+    }
 }

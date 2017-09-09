@@ -7,4 +7,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ParsePkData {
     String parsePkData(HttpServletRequest request);
+    String getGroupData();
+    String getMemberData(String group);
 }

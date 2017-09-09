@@ -24,19 +24,19 @@
     </style></head>
 <body>
 <div class="bg">
-    <%--<img src="${contextPath}/image/bg.jpg">--%>
+    <img src="${contextPath}/image/bg.jpg">
 </div>
 <div class="box">
     <div class="jz">
         <p><b>支局随机PK活动</b></p>
         <div style="display:flex;">
-            <select class="select">
+            <select id="group" class="select">
                 <option value="组名">组名</option>
             </select>
             <span class="name">A方</span>
         </div>
         <div style="display:flex;">
-            <select class="select">
+            <select id="member" class="select">
                 <option 　value="支局">支局</option>
             </select>
             <span class="phone">B方</span><br>

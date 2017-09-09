@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -220,4 +221,23 @@ public class JsonMapper {
         return mapper;
     }
 
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> toMap(String json) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        try {
+            if (json == null || json.equals("")) {
+                return null;
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            result = objectMapper.readValue(json, Map.class);
+            if (result == null) {
+                return new HashMap<String, Object>();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return result;
+    }
 }
