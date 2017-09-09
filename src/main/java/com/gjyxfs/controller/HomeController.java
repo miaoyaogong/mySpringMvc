@@ -1,9 +1,6 @@
 package com.gjyxfs.controller;
 
-import com.gjyxfs.model.User;
-import com.gjyxfs.service.IUserService;
 import com.gjyxfs.service.CacheService;
-import com.gjyxfs.service.TestAopService;
 import com.gjyxfs.util.JsonMapper;
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.LoadingCache;
@@ -29,14 +26,6 @@ public class HomeController {
     @Autowired
     private CacheService cacheService;
 
-    @Autowired
-    private IUserService userService;
-
-    @RequestMapping("/")
-    @ResponseBody
-    public String index(HttpServletRequest request){
-        return "HelloWorld";
-    }
 
     @RequestMapping("/cache")
     @ResponseBody
@@ -47,13 +36,5 @@ public class HomeController {
             logger.info("返回结果;{} 耗时：{}", ss.get("testCache"), timer.stop());
             Thread.currentThread().sleep(1000);
         }
-
-    }
-
-    @RequestMapping("/getAllUsers")
-    @ResponseBody
-    public String getAllUsers(HttpServletRequest request) throws ExecutionException {
-        List<User> users =  userService.getAllUsers();
-        return JsonMapper.getInstance().toJson(users);
     }
 }

@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 public class CacheServiceImpl implements CacheService {
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    // 模拟一个需要耗时2s的数据库查询任务
-    private static Callable<String> callable = new Callable<String>() {
+    // 模拟一个需要耗时5s的数据库查询任务
+    private  Callable<String> callable = new Callable<String>() {
         public String call() throws Exception {
             Thread.currentThread().sleep(5000);
             return UUID.randomUUID().toString();
@@ -55,5 +55,19 @@ public class CacheServiceImpl implements CacheService {
 
     public LoadingCache<String, String> getCachedData() {
         return testCache;
+    }
+
+    public static void main(String[] args) {
+        CacheServiceImpl cs = new CacheServiceImpl();
+        while (true){
+            try {
+                String uuid = cs.getCachedData().get("testCache");
+                System.out.println(uuid);
+                Thread.currentThread().sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

@@ -51,7 +51,8 @@
         <property name="resolveLazily" value="true"/>
     </bean>
 
-    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+    <!-- AOP实例 -->
+<!--    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
     <bean id="aopBean" class="com.gjyxfs.service.AopAspect"/>
     <aop:config>
         <aop:aspect ref="aopBean" >
@@ -60,5 +61,5 @@
             <aop:after method="after" pointcut-ref="pointcut"/>
             <aop:after-throwing method="exeException" pointcut-ref="pointcut"/>
         </aop:aspect>
-    </aop:config>
+    </aop:config>-->
 </beans>
