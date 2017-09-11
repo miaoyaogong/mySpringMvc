@@ -111,7 +111,6 @@ var num2 = 0;
 var t;
 //开始停止
 function start() {
-    console.log(members)
     if (runing) {
         runing = false;
         $('#btntxt').removeClass('start').addClass('stop');
