@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.gjyxfs.dao.DataMapper;
 import com.gjyxfs.model.Data;
 import com.gjyxfs.service.ParsePkData;
-import com.gjyxfs.util.FileUtil;
-import com.gjyxfs.util.JsonMapper;
-import com.gjyxfs.util.POIExcelUtil;
-import com.gjyxfs.util.PathUtil;
+import com.gjyxfs.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -37,9 +34,12 @@ public class ParsePkDataImpl implements ParsePkData {
         FileUtil.clearFolder(dcpTempPath);
         try {
             List<String> paths = FileUtil.upload(request, dcpTempPath);
+            if(paths == null || paths.size() == 0){
+                return ReturnJsonUtil.errorStr("10001","请先选择文件");
+            }
             Map<String, List<String>> map= POIExcelUtil.readXlsx(paths.get(0));
             if(map == null || map.size() == 0){
-                return "false";
+                return ReturnJsonUtil.errorStr("10002","文件格式有误");
             }
             String value = JsonMapper.getInstance().toJson(map);
             Data data = new Data();
@@ -50,9 +50,9 @@ public class ParsePkDataImpl implements ParsePkData {
             setJsonData(value);
 
         } catch (IOException e) {
-            return "false";
+            return ReturnJsonUtil.errorStr("10003","系统错误");
         }
-        return "succese";
+        return ReturnJsonUtil.successStr("成功");
     }
 
     @PostConstruct

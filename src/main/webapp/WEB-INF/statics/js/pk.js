@@ -1,7 +1,7 @@
 /**
  * Created by 1 on 2017/9/7.
  */
-
+var selectedGroup = "";
 $(function(){
     refresh();
     $("#upfiledo").on('click', function () {
@@ -11,7 +11,8 @@ $(function(){
     $('#group').change(function(){
         var select = $(this).children('option:selected').val();
         selectGroup(select)
-        $("button").show();
+        selectedGroup = select;
+        $("#start").show();
         $("#res1").text('****');
         $("#res2").text('****');
     })
@@ -64,8 +65,9 @@ function selectGroup(group){
     });
 }
 
-function toUpload(formData) {
+function toUpload() {
     var formData = new FormData($("#uploadForm")[0]);
+    // var formData = {"test":"ttt"}
     $.ajax({
         url: contextPath + "/upload",
         dataType: "json",
@@ -75,9 +77,13 @@ function toUpload(formData) {
         cache: false,
         contentType: false,
         processData: false,
-        success: function (data) {
+        error: function(request) {
+            alert("上传失败！")
             location.reload()
-            alert("数据上传成功");
+        },
+        success: function (data) {
+            alert("上传成功！")
+            location.reload()
         }
     });
 }
@@ -89,27 +95,23 @@ var key2=0; //中奖下标
 var time=0; //定时器
 
 function runTime(){
-    //$("button").show();
+    //$("#start").show();
     clearInterval(time);
     time=setInterval('trunNum()',10);
 }
 
 //点击按钮
 function start(){
-    console.log(data)
     if(btn){
-        if(data.length < 2){
-            $("button").hide();
-            alert('所有PK已结束！！！');
-        }else{
+        if(data.length >= 2){
             btn=false;
-            $("button").removeClass("start").addClass("end").text("结束PK");
+            $("#start").removeClass("start").addClass("end").text("结束抽取");
             startTrun();
         }
 
     }else{
         btn=true;
-        $("button").removeClass("end").addClass("start").text("开始PK");
+        $("#start").removeClass("end").addClass("start").text("开始抽取");
         endTrun();
     }
 }
@@ -144,9 +146,30 @@ function startTrun(){
 //停止转动数字
 function endTrun(){
     clearInterval(time);
-    console.log('总参与人员数量：'+data.length);
-    data.splice(key1,1);
-    data.splice(key2,1);
+    var res1 = data[key1].toString();
+    var res2 = data[key2].toString();
+    console.log(res1 + ' VS '+res2);
+    // console.log(data)
+    for(var i = 0;i < data.length; i++) {
+        var res = data[i].toString();
+       if(res == res1 ){
+           data.splice(i,1);
+       }
+    }
 
+    for(var i = 0;i < data.length; i++) {
+        var res = data[i].toString();
+        if(res == res2 ){
+            data.splice(i,1);
+        }
+    }
+    // console.log(data)
+
+    console.log('----------------')
+
+    if(data.length < 2){
+        $("#start").hide();
+        alert(selectedGroup+'抽取已结束！！！');
+    }
 
 }
