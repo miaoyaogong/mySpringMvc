@@ -75,9 +75,7 @@
                     <p >
                         在应用中有以年柱或月柱为命主进行批命，但大多用日柱的日干为主，以年干支代表父母，月干支代表兄弟姐妹（本人是男性，月干代表兄弟，月支代表姐妹； 本人是女性，月干代表姐妹，月支代表兄弟）日干代表本人，日支代表配偶。时代表子嗣。更取命宫、胎元、大运、小运、流年，配合行年太岁、月令等的五 行生克制化定休咎。
                     </p>
-                    <p >
-                        &nbsp; &nbsp;<img title="1449549074120161.jpg" alt="fs_jiaju_07.jpg" src="http://www.qinyangming.cn/ueditor/php/upload/image/20151208/1449549074120161.jpg" /><img title="1449549076101012.jpg" alt="forecast_03.jpg" src="http://www.qinyangming.cn/ueditor/php/upload/image/20151208/1449549076101012.jpg" />
-                    </p>
+
                     <p >
                         <br />
                     </p>

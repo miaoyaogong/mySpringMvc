@@ -21,6 +21,8 @@ public class HomeController {
         model.addAttribute("menu","index");
         model.addAttribute("siteName", Constants.siteName);
 
+
+
         return "index";
     }
 
