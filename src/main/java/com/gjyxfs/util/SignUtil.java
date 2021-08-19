@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class SignUtil {
     // 与接口配置信息中的 Token 要一致
-    private static String token = "everydaysmile";
+    private static String token = "dota";
     /**
      * 验证签名
      * @param signature
