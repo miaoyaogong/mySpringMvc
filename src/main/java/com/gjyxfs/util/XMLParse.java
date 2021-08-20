@@ -2,11 +2,11 @@ package com.gjyxfs.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gjyxfs.model.TulingRes;
-import com.gjyxfs.util.orc.HttpUtil;
 import com.gjyxfs.util.orc.WebOCR;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
@@ -18,7 +18,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +30,9 @@ import java.util.Map;
  * 提供提取消息格式中的密文及生成回复消息格式的接口.
  */
 public class XMLParse {
+    private static Logger logger = LoggerFactory.getLogger(XMLParse.class);
     public static final String[] filter ={"近卫军团","暗夜精灵","100%","天灾军团","不死族","队伍2","队伍1","打开"};
+    public static final String filterPath = "/home/ubuntu/tools/site/filter.txt";
 
     public static final String userBase ="http://users.09game.com/home/GetUserPub";
     public static final String userScore ="http://score.09game.com/Ordinary/SeasonSummary";
@@ -80,6 +81,7 @@ public class XMLParse {
         param.put("info", content);
         param.put("userid", fromUserName);
         String res = HttpUtils.getData("http://www.tuling123.com/openapi/api", param);
+        logger.info("tuling req:{},res:{}", JSONObject.toJSONString(param), res);
         ObjectMapper mapper = new ObjectMapper();
         TulingRes tuling = null;
         try {
@@ -102,6 +104,7 @@ public class XMLParse {
         String content = null;
         try {
             content = WebOCR.getContent(url);
+            logger.info("WebOCR.getContent url:{}, res:{}", url, content);
             if(!StringUtils.isEmpty(content)){
 
                 Map<String, List<String>> map = resolve(content);
@@ -113,6 +116,7 @@ public class XMLParse {
                             Map<String, String> params1 = new HashMap<>();
                             params1.put("user_name", "'"+word+"'");
                             String userBaseData = HttpUtils.getData(userBase, params1);
+                            logger.info("09 userBaseData req:{},res:{}", JSONObject.toJSONString(params1), userBaseData);
                             if(!StringUtils.isEmpty(userBaseData) && userBaseData.contains("\"result\":0")){
                                 JSONObject jsonObject = JSONObject.parseObject(userBaseData).getJSONArray("temp").getJSONObject(0);
                                 String level = jsonObject.getString("level");
@@ -121,6 +125,7 @@ public class XMLParse {
                                 params2.put("UserID", user_id);
                                 params2.put("GameTypeID", "1");
                                 String userScoreData = HttpUtils.getData(userScore,params2);
+                                logger.info("09 userScore req:{},res:{}", JSONObject.toJSONString(params2), userScoreData);
                                 JSONArray jsonArray = JSONObject.parseObject(userScoreData).getJSONObject("data").getJSONArray("total");
                                 int total_times = 0;
                                 int total_win = 0;
@@ -145,6 +150,7 @@ public class XMLParse {
 
             }
         } catch (Exception e) {
+            logger.info("generateImage error", e);
             e.printStackTrace();
             res = "服务繁忙，请稍后再试！";
         }
@@ -153,7 +159,6 @@ public class XMLParse {
     }
 
     public static Map<String,List<String>> resolve(String content) {
-        content = "{\"code\":\"0\",\"data\":{\"block\":[{\"type\":\"text\",\"line\":[{\"confidence\":1,\"word\":[{\"content\":\"近卫军团\"}]},{\"confidence\":1,\"word\":[{\"content\":\"胡狗狗\"}]},{\"confidence\":1,\"word\":[{\"content\":\"暗夜精灵队伍1\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"loukiti\"}]},{\"confidence\":1,\"word\":[{\"content\":\"暗夜精灵队伍1\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"再赢50场\"}]},{\"confidence\":1,\"word\":[{\"content\":\"暗夜精灵队伍1\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"木木果果诺\"}]},{\"confidence\":1,\"word\":[{\"content\":\"暗夜精灵队伍1\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"程序员\"}]},{\"confidence\":1,\"word\":[{\"content\":\"暗夜精灵队伍1V\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%V\"}]},{\"confidence\":1,\"word\":[{\"content\":\"天灾军团\"}]},{\"confidence\":1,\"word\":[{\"content\":\"风云375448\"}]},{\"confidence\":1,\"word\":[{\"content\":\"不死族队伍2\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"一曲欢歌\"}]},{\"confidence\":1,\"word\":[{\"content\":\"不死族\"}]},{\"confidence\":1,\"word\":[{\"content\":\"队伍2\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"打开\"}]},{\"confidence\":1,\"word\":[{\"content\":\"不死族队伍2\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"只小苍蝇\"}]},{\"confidence\":1,\"word\":[{\"content\":\"不死族\"}]},{\"confidence\":1,\"word\":[{\"content\":\"队伍2\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]},{\"confidence\":1,\"word\":[{\"content\":\"打开\"}]},{\"confidence\":1,\"word\":[{\"content\":\"不死族队伍2\"}]},{\"confidence\":1,\"word\":[{\"content\":\"100%\"}]}]}]},\"desc\":\"success\",\"sid\":\"wcr00127b94@dxd1471477fd8d6f2b00\"}";
         Map<String,List<String>> map = new HashMap();
         JSONObject jsonpObject = JSONObject.parseObject(content);
         JSONArray lines = jsonpObject.getJSONObject("data").getJSONArray("block").getJSONObject(0).getJSONArray("line");
@@ -162,7 +167,8 @@ public class XMLParse {
         boolean isJinwei = true;
         for(int i = 0; i< lines.size(); i++){
             String word = lines.getJSONObject(i).getJSONArray("word").getJSONObject(0).getString("content");
-            if(word.equals("天灾军团")){
+            word = word.replace("…","灬").replace("、","丶");
+            if(word.equals("天灾军团") || word.equals("队伍2")){
                 isJinwei =false;
             }
             if(checkFilter(word)){
@@ -176,7 +182,7 @@ public class XMLParse {
 
         map.put("近卫军团", jinweiPerson);
         map.put("天灾军团", tianzaiPerson);
-String res = "";
+        String res = "";
         for(String key : map.keySet()){
             res = res + key + "：\n";
             List<String> list = map.get(key);
@@ -223,6 +229,12 @@ String res = "";
     }
 
     private static boolean checkFilter(String word) {
+        for(int j = 0; j < filter.length; j++){
+            if(word.contains(filter[j])){
+                return false;
+            }
+        }
+
         for(int j = 0; j < filter.length; j++){
             if(word.contains(filter[j])){
                 return false;

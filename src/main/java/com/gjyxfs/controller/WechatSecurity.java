@@ -1,5 +1,6 @@
 package com.gjyxfs.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gjyxfs.util.MessageUtil;
 import com.gjyxfs.util.SignUtil;
 import com.gjyxfs.util.XMLParse;
@@ -63,14 +64,14 @@ public class WechatSecurity {
     public String doPost(HttpServletRequest request,HttpServletResponse response) {
         try{
             Map<String, String> map= MessageUtil.parseXml(request);
+            logger.info("WeChat request :{}", JSONObject.toJSONString(map));
+
             String toUserName = map.get("ToUserName");
             String fromUserName = map.get("FromUserName");
-            String createTime = map.get("CreateTime");
             String msgType = map.get("MsgType");
             String content = map.get("Content");
             String picUrl = map.get("PicUrl");
             String event = map.get("Event");
-
 
             String res = "";
             if("text".equals(msgType)){
@@ -80,7 +81,6 @@ public class WechatSecurity {
             }else if("event".equals(msgType) && event.equals("subscribe") ){
                 res = XMLParse.generateSubscribe(fromUserName, toUserName, String.valueOf(new Date().getTime()), msgType, picUrl);
             }
-
             return res;
         }catch(Exception e){
             logger.error("解析xml失败");
