@@ -103,10 +103,13 @@ public class XMLParse {
         String res = "";
         String content = null;
         try {
+            if(CacheUtil.getValue(url) != null){
+                res = String.valueOf(CacheUtil.getValue(url));
+                return String.format(format, fromUserName, toUserName, timestamp, "text", res);
+            }
             content = WebOCR.getContent(url);
             logger.info("WebOCR.getContent url:{}, res:{}", url, content);
             if(!StringUtils.isEmpty(content)){
-
                 Map<String, List<String>> map = resolve(content);
                 for(String key : map.keySet()){
                     res = res + key + "：\n";
@@ -148,6 +151,7 @@ public class XMLParse {
                     }
                 }
 
+                CacheUtil.addTempCache(url, res , 60);
             }
         } catch (Exception e) {
             logger.info("generateImage error", e);
@@ -235,11 +239,11 @@ public class XMLParse {
             }
         }
 
-        for(int j = 0; j < filter.length; j++){
-            if(word.contains(filter[j])){
-                return false;
-            }
-        }
+//        for(int j = 0; j < filter.length; j++){
+//            if(word.contains(filter[j])){
+//                return false;
+//            }
+//        }
         return true;
     }
 
